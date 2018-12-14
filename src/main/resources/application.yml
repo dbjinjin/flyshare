@@ -1,2 +1,16 @@
 server:
-  port: 8090
+  port: 8080
+  servlet:
+    context-path: /flyshare
+
+logging:
+  config: classpath:log4j2.xml
+
+spring:
+  freemarker:
+    cache: false
+    suffix: .ftl
+    content-type: text/html
+    charset: UTF-8
+    settings:
+      template_update_delay: 0
