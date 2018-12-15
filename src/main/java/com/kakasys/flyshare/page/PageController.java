@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -79,5 +80,13 @@ public class PageController extends BaseController
                 logger.error(e);
             }
         }
+    }
+
+    @RequestMapping("/show")
+    public ModelAndView showPage(@RequestParam String name)
+    {
+        ModelAndView view = new ModelAndView();
+        view.setViewName(name);
+        return view;
     }
 }
