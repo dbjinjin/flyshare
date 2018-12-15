@@ -2,6 +2,7 @@ package com.kakasys.flyshare.index;
 
 import com.kakasys.flyshare.base.web.BaseController;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,4 +31,29 @@ public class IndexController extends BaseController
         indexView.addObject("name", "吴先生");
         return indexView;
     }
+
+    @RequestMapping(value = "/welcome", method = RequestMethod.GET)
+    public ModelAndView welcomeView()
+    {
+        ModelAndView indexView = new ModelAndView();
+        indexView.setViewName("welcome");
+        return indexView;
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView loginView()
+    {
+        ModelAndView indexView = new ModelAndView();
+        indexView.setViewName("login");
+        return indexView;
+    }
+
+    @RequestMapping(value = "/test/{id}", method = RequestMethod.GET)
+    public ModelAndView testView(@PathVariable("id") String id)
+    {
+        ModelAndView indexView = new ModelAndView();
+        indexView.setViewName("/test/" + id);
+        return indexView;
+    }
+
 }

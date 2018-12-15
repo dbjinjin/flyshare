@@ -14,3 +14,5 @@ spring:
     charset: UTF-8
     settings:
       template_update_delay: 0
+    template-loader-path: classpath:/templates/ftl
+    check-template-location: true
