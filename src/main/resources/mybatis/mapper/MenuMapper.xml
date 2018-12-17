@@ -14,10 +14,12 @@
         <result column="predate" property="predate" jdbcType="TIMESTAMP"/>
         <result column="modifydate" property="modifydate" jdbcType="TIMESTAMP"/>
 
-        <!--<collection property="childMenus" column="id"
+        <!--
+        <collection property="childMenus" column="id"
                     javaType="ArrayList" ofType="com.kakasys.flyshare.system.menu.model.Menu"
                     select="com.kakasys.flyshare.system.menu.dao.MenuMapper.queryChild">
-        </collection>-->
+        </collection>
+        -->
 
     </resultMap>
 
@@ -36,34 +38,35 @@
 
     <insert id="save" parameterType="com.kakasys.flyshare.system.menu.model.Menu">
         <selectKey keyProperty="id" resultType="String" order="BEFORE">
-            SELECT upper(REPLACE(UUID(), '-', ''))
+            select upper(replace(UUID(), '-', ''))
         </selectKey>
-        INSERT INTO sys_menu
-        (id, menuname, menuurl, menustyle, parentid,sysid, inuse,ordno,predate)
-        VALUES
+
+        insert into sys_menu
+        (<include refid="Base_Column_List"/>)
+        values
         (#{id}, #{menuname}, #{menuurl}, #{menustyle}, #{parentid}, #{sysid},
-        #{inuse},#{ordno},#{predate,jdbcType=TIMESTAMP})
+        #{inuse},#{ordno},#{predate,jdbcType=TIMESTAMP},#{modifydate,jdbcType=TIMESTAMP})
 
     </insert>
 
-    <insert id="saveBatch">
-        INSERT INTO sys_menu
-        (id, menuname, menuurl, menustyle, parentid,sysid, inuse,ordno,predate)
-        VALUES
+    <insert id="batchSave">
+        insert into sys_menu
+        (<include refid="Base_Column_List"/>)
+        values
         <foreach collection="list" item="menu" separator=",">
             (
             (SELECT upper(REPLACE(UUID(), '-', '')) AS id),
             #{menu.menuname}, #{menu.menuurl}, #{menu.menustyle}, #{menu.parentid}, #{menu.sysid},
-            #{menu.inuse}, #{menu.ordno},#{menu.predate,jdbcType=TIMESTAMP}
+            #{menu.inuse}, #{menu.ordno},#{menu.predate,jdbcType=TIMESTAMP},#{menu.modifydate,jdbcType=TIMESTAMP}
             )
         </foreach>
     </insert>
 
     <select id="queryList" resultMap="BaseResultMap"
             parameterType="com.kakasys.flyshare.system.menu.model.MenuQueryParams">
-        SELECT
+        select
         <include refid="Base_Column_List"/>
-        FROM sys_menu where 1=1
+        from sys_menu where 1=1
         <if test="id != null">
             and id = #{id}
         </if>
@@ -89,17 +92,10 @@
         order by ordno asc
     </select>
 
-    <select id="queryChild" resultMap="BaseResultMap" parameterType="java.lang.String">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM sys_menu where parentid= #{parentid}
-        order by ordno asc
-    </select>
-
     <delete id="delete" parameterType="java.lang.String">
-        DELETE
-        FROM sys_menu
-        WHERE id = #{id}
+        delete
+        from sys_menu
+        where id = #{id}
     </delete>
 
     <delete id="batchDelete" parameterType="java.util.List">
