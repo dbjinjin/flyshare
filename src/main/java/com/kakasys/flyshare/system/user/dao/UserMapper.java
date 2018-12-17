@@ -1,5 +1,10 @@
 package com.kakasys.flyshare.system.user.dao;
 
+import com.kakasys.flyshare.system.user.model.User;
+import com.kakasys.flyshare.system.user.model.UserQueryParams;
+
+import java.util.List;
+
 /**
  * <p>标题： </p>
  * <p>功能： </p>
@@ -15,4 +20,13 @@ package com.kakasys.flyshare.system.user.dao;
  */
 public interface UserMapper
 {
+    int save(User user);
+
+    int batchSave(List<User> users);
+
+    List<User> queryList(UserQueryParams queryParams);
+
+    int delete(String id);
+
+    int batchDelete(List<String> ids);
 }

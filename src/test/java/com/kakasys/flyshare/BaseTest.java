@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * <p>标题： </p>
@@ -19,6 +22,8 @@ import org.junit.Test;
  *
  * @version 1.0
  */
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public abstract class BaseTest
 {
     protected Logger logger = LogManager.getLogger(getClass());

@@ -52,6 +52,8 @@ public class UserTest extends BaseTest
     @Override
     public void queryList()
     {
+        User user = DataUtils.buildRandomData(User.class);
+        userMapper.save(user);
         UserQueryParams queryParams = new UserQueryParams();
         queryParams.setPredateFrom(DateUtils.getStrDate("2018-12-17 13:00:00", FormatStyle.STYLE_TIME));
         Assert.assertTrue(userMapper.queryList(queryParams).size() > 0);
