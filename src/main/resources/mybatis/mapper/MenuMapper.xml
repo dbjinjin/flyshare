@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kakasys.flyshare.system.menu.dao.MenuMapper">
+
+    <resultMap id="BaseResultMap" type="com.kakasys.flyshare.system.menu.model.Menu">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="menuname" property="menuname" jdbcType="VARCHAR"/>
+        <result column="menuurl" property="menuurl" jdbcType="VARCHAR"/>
+        <result column="menustyle" property="menustyle" jdbcType="VARCHAR"/>
+        <result column="parentid" property="parentid" jdbcType="VARCHAR"/>
+        <result column="sysid" property="sysid" jdbcType="VARCHAR"/>
+        <result column="ordno" property="ordno" jdbcType="INTEGER"/>
+        <result column="inuse" property="inuse" jdbcType="BIT"/>
+        <result column="predate" property="predate" jdbcType="TIMESTAMP"/>
+        <result column="modifydate" property="modifydate" jdbcType="TIMESTAMP"/>
+
+        <!--<collection property="childMenus" column="id"
+                    javaType="ArrayList" ofType="com.kakasys.flyshare.system.menu.model.Menu"
+                    select="com.kakasys.flyshare.system.menu.dao.MenuMapper.queryChild">
+        </collection>-->
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        menuname,
+        menuurl,
+        menustyle,
+        parentid,
+        sysid,
+        inuse,
+        ordno,
+        predate,
+        modifydate
+    </sql>
+
+    <insert id="save" parameterType="com.kakasys.flyshare.system.menu.model.Menu">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            SELECT upper(REPLACE(UUID(), '-', ''))
+        </selectKey>
+        INSERT INTO sys_menu
+        (id, menuname, menuurl, menustyle, parentid,sysid, inuse,ordno,predate)
+        VALUES
+        (#{id}, #{menuname}, #{menuurl}, #{menustyle}, #{parentid}, #{sysid},
+        #{inuse},#{ordno},#{predate,jdbcType=TIMESTAMP})
+
+    </insert>
+
+    <insert id="saveBatch">
+        INSERT INTO sys_menu
+        (id, menuname, menuurl, menustyle, parentid,sysid, inuse,ordno,predate)
+        VALUES
+        <foreach collection="list" item="menu" separator=",">
+            (
+            (SELECT upper(REPLACE(UUID(), '-', '')) AS id),
+            #{menu.menuname}, #{menu.menuurl}, #{menu.menustyle}, #{menu.parentid}, #{menu.sysid},
+            #{menu.inuse}, #{menu.ordno},#{menu.predate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+    <select id="queryList" resultMap="BaseResultMap"
+            parameterType="com.kakasys.flyshare.system.menu.model.MenuQueryParams">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_menu where 1=1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="menuname != null">
+            and menuname = #{menuname}
+        </if>
+        <if test="sysid != null">
+            and sysid = #{sysid}
+        </if>
+        <if test="parentid != null">
+            and parentid = #{parentid}
+        </if>
+        <if test="inuse != null">
+            and inuse = #{inuse}
+        </if>
+
+        <if test="predateFrom != null">
+            and predate <![CDATA[>=]]> #{predateFrom}
+        </if>
+        <if test="predateTo != null">
+            and predate <![CDATA[<=]]>#{predateTo}
+        </if>
+        order by ordno asc
+    </select>
+
+    <select id="queryChild" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_menu where parentid= #{parentid}
+        order by ordno asc
+    </select>
+
+    <delete id="delete" parameterType="java.lang.String">
+        DELETE
+        FROM sys_menu
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="batchDelete" parameterType="java.util.List">
+        delete from sys_menu where id in
+        <foreach item="id" collection="list" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

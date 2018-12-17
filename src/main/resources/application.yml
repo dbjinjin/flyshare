@@ -5,6 +5,8 @@ server:
 
 logging:
   config: classpath:log4j2.xml
+  level:
+    com.kakasys.flyshare: debug
 
 spring:
   freemarker:
@@ -16,3 +18,18 @@ spring:
       template_update_delay: 0
     template-loader-path: classpath:/templates/ftl
     check-template-location: true
+
+    #数据库连接配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.0.150:3306/flyshare?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: Root!!2018
+    #schema: classpath:create-table.sql
+    #data: classpath:init-data.sql
+    #initialization-mode: never
+
+# mybatis 配置
+mybatis:
+  config-location: classpath:mybatis/config.xml
+  mapper-locations: classpath:mybatis/mapper/*.xml

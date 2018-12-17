@@ -2,6 +2,7 @@ package com.kakasys.flyshare;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -21,6 +22,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @version 1.0
  */
 @SpringBootApplication
+@MapperScan("com.kakasys.flyshare")
 public class FlyshareApplication extends SpringBootServletInitializer
 {
     private static Logger logger = LogManager.getLogger(FlyshareApplication.class);
