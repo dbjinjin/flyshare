@@ -39,6 +39,7 @@ public class MenuTest extends BaseTest
     @Resource
     private MenuMapper menuMapper;
 
+    private String id;
 
     private List<String> list = new ArrayList<>();
 
@@ -48,6 +49,7 @@ public class MenuTest extends BaseTest
         Menu menu = DataUtils.buildRandomData(Menu.class);
         int saveCount = menuMapper.save(menu);
         Assert.assertEquals(1, saveCount);
+        id = menu.getId();
     }
 
     @Override
@@ -62,7 +64,7 @@ public class MenuTest extends BaseTest
             menus.add(menu);
         }
         long time1 = System.currentTimeMillis();
-        Assert.assertEquals(size, menuMapper.batchSave(menus));
+        Assert.assertEquals(size, menuMapper.saveBatch(menus));
         long time2 = System.currentTimeMillis();
         logger.warn("入库数据:{} 费时:{}", size, time2 - time1);
     }
@@ -80,10 +82,8 @@ public class MenuTest extends BaseTest
     public void delete()
     {
         Menu menu = DataUtils.buildRandomData(Menu.class);
-        menuMapper.save(menu);
-        String id = menu.getId();
-        logger.info("新增数据:{}", id);
-        if (StrUtils.isNotNull(id))
+        int saveCount = menuMapper.save(menu);
+        if (StrUtils.isNull(menu.getId()))
         {
             Assert.assertEquals(1, menuMapper.delete(id));
         }
@@ -98,15 +98,12 @@ public class MenuTest extends BaseTest
         List<Menu> list = menuMapper.queryList(menuQueryParams);
         long time2 = System.currentTimeMillis();
         logger.warn("查询数量：{} 费时:{}", list.size(), (double) (time2 - time1) / 1000);
-        if (!list.isEmpty())
+        List<String> ids = new ArrayList<>();
+        for (Menu menu : list)
         {
-            List<String> ids = new ArrayList<>();
-            for (Menu menu : list)
-            {
-                ids.add(menu.getId());
-            }
-            Assert.assertEquals(list.size(), menuMapper.batchDelete(ids));
+            ids.add(menu.getId());
         }
+        Assert.assertEquals(list.size(), menuMapper.batchDelete(ids));
     }
 
 }

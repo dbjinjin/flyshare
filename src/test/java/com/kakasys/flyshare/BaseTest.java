@@ -4,12 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
 
 /**
  * <p>标题： </p>
@@ -24,23 +19,19 @@ import org.springframework.test.context.junit4.SpringRunner;
  *
  * @version 1.0
  */
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class BaseTest
 {
     protected Logger logger = LogManager.getLogger(getClass());
     protected ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public abstract void save();
+    public abstract void save() throws JsonProcessingException;
 
     @Test
     public abstract void batchSave();
 
     @Test
-    public abstract void queryList();
+    public abstract void queryList() throws JsonProcessingException;
 
     @Test
     public abstract void delete();

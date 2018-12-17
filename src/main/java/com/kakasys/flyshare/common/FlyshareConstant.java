@@ -16,5 +16,7 @@ package com.kakasys.flyshare.common;
 public class FlyshareConstant
 {
     //登录页
-    public static final String PAGE_LOGIN = "login";
+    public static final String INDEX_PAGE = "index";
+    //登录页
+    public static final String LOGIN_PAGE = "login";
 }

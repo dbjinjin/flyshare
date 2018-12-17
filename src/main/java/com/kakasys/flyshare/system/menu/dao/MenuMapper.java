@@ -23,7 +23,7 @@ public interface MenuMapper extends BaseMapper
 {
     int save(Menu menu);
 
-    int batchSave(List<Menu> menus);
+    int saveBatch(List<Menu> menus);
 
     List<Menu> queryList(MenuQueryParams queryParams);
 

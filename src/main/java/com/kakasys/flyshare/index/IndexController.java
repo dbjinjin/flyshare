@@ -27,7 +27,12 @@ public class IndexController extends BaseController
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String indexView()
     {
-        return FlyshareConstant.PAGE_LOGIN;
+        return "redirect:/index.html";
     }
 
+    @RequestMapping(value = "/index.html", method = RequestMethod.GET)
+    public String indexPageView()
+    {
+        return "index";
+    }
 }
