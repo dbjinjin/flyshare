@@ -21,8 +21,55 @@
 
         $(function () {
             initTable();
+
+            $("#del").on("click", function () {
+                var rows = $("#table").bootstrapTable('getSelections');
+                if (rows.length === 0) {
+                    showInfo(3,"请选择删除项");
+                }
+            });
+
+            $("#add").on("click", function () {
+                var rows = $("#table").bootstrapTable('getSelections');
+                if (rows.length === 0) {
+                    showInfo(2,"请选择新增项");
+                }
+            });
+
+            $("#edit").on("click", function () {
+                var rows = $("#table").bootstrapTable('getSelections');
+                if (rows.length === 0) {
+                    showInfo(1,"请选择修改项");
+                }
+            });
+
         });
 
+
+        function hideInfo(){
+            //隐藏
+            $('#messageBox').removeClass('in').addClass('hide')
+           ;
+        }
+        /**
+         * @param type 类型  1:成功 2:消息  3:警告
+         * @param msg 是否显示
+         */
+        function showInfo(type,msg) {
+            hideInfo();
+            $('#messageBox').removeClass().addClass('alert-dismissable alert in');
+            $('#messageBox_msg').text(msg);
+            if(type ===1){
+                $('#messageBox').addClass('alert-success');
+                $('#messageBox_type').text("成功！");
+            }else if(type ===2){
+                $('#messageBox').addClass('alert-info');
+                $('#messageBox_type').text("提示！");
+            }else if(type ===3){
+                $('#messageBox').addClass('alert-danger');
+                $('#messageBox_type').text("警告！");
+            }
+        }
         var searchText = $('.search').find('input').val();
 
         function initTable() {
@@ -52,6 +99,7 @@
                 uniqueId: "id",
                 showToggle: true,
                 cardView: false,
+                clickToSelect: true,
                 //得到查询的参数
                 queryParams: function (params) {
                     var temp = {
@@ -70,7 +118,7 @@
                     field: 'id',
                     title: 'ID',
                     align: 'center',
-                    visible: false ,
+                    visible: false,
                     titleTooltip: "主键"
                 }, {
                     field: 'menuname',
@@ -132,7 +180,7 @@
 
                 },
                 onDblClickRow: function (row) {
-                    window.alert(row.id);
+                    //双击操作
                 }
             });
         }
@@ -166,48 +214,58 @@
     </script>
 </head>
 <body>
-    <div class="panel-body" style="padding-bottom:0px;">
-        <div class="panel panel-default">
-            <div class="panel-heading">查询条件</div>
-            <div class="panel-body">
-                <form id="formSearch" class="form-horizontal">
-                    <div class="form-group" style="margin-top:15px">
-                        <label class="control-label col-sm-1" for="txt_search_departmentname">名称</label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="txt_search_departmentname">
-                        </div>
-                        <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-                        <div class="col-sm-3">
-                            <input type="text" class="form-control" id="txt_search_statu">
-                        </div>
-                        <div class="col-sm-4" style="text-align:left;">
-                            <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询
-                            </button>
-                        </div>
+<div class="panel-body" style="padding-bottom:0px;">
+    <div class="panel panel-default">
+        <div class="panel-heading">查询条件</div>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group" style="margin-top:15px">
+                    <label class="control-label col-sm-1" for="txt_search_departmentname">名称</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="txt_search_departmentname">
                     </div>
-                </form>
-            </div>
+                    <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="txt_search_statu">
+                    </div>
+                    <div class="col-sm-4" style="text-align:left;">
+                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
-
-        <div id="toolbar" class="btn-group">
-            <button id="add" class="btn btn-default" title="添加">
-                <i class="glyphicon glyphicon-plus"></i> 添加
-            </button>
-            <button id="del" class="btn btn-default" title="删除">
-                <i class="glyphicon glyphicon-minus"></i> 删除
-            </button>
-            <button id="edit" class="btn btn-default" title="编辑">
-                <i class="glyphicon glyphicon-pencil"></i> 编辑
-            </button>
-            <button id="enable" class="btn btn-default" title="启用">
-                <i class="glyphicon glyphicon-ok"></i> 启用
-            </button>
-            <button id="disable" class="btn btn-default" title="停用">
-                <i class="glyphicon glyphicon-remove"></i> 启用
-            </button>
-        </div>
-        <table id="table"></table>
-
     </div>
+
+    <div id="toolbar" class="btn-group">
+        <button id="add" class="btn btn-default" title="添加">
+            <i class="glyphicon glyphicon-plus"></i> 添加
+        </button>
+        <button id="del" class="btn btn-default" title="删除">
+            <i class="glyphicon glyphicon-minus"></i> 删除
+        </button>
+        <button id="edit" class="btn btn-default" title="编辑">
+            <i class="glyphicon glyphicon-pencil"></i> 编辑
+        </button>
+        <button id="enable" class="btn btn-default" title="启用">
+            <i class="glyphicon glyphicon-ok"></i> 启用
+        </button>
+        <button id="disable" class="btn btn-default" title="停用">
+            <i class="glyphicon glyphicon-remove"></i> 启用
+        </button>
+    </div>
+
+    <div id="messageBox" class="alert alert-danger alert-dismissable hide" role="alert">
+        <button type="button" class="close" <#--data-dismiss="alert"--> aria-label="Close" onclick="hideInfo()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <strong id="messageBox_type"></strong>
+        <span id="messageBox_msg"></span>
+    </div>
+
+
+    <table id="table"></table>
+
+</div>
 </body>
 </html>
