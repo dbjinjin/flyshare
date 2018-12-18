@@ -67,16 +67,16 @@
         SELECT
         <include refid="Base_Column_List"/>
         FROM sys_menu where 1=1
-        <if test="id != null">
+        <if test="id != null and id!=''">
             and id = #{id}
         </if>
-        <if test="menuname != null">
+        <if test="menuname != null and menuname!=''">
             and menuname = #{menuname}
         </if>
-        <if test="sysid != null">
+        <if test="sysid != null and sysid!=''">
             and sysid = #{sysid}
         </if>
-        <if test="parentid != null">
+        <if test="parentid != null and parentid!=''">
             and parentid = #{parentid}
         </if>
         <if test="inuse != null">
@@ -90,7 +90,7 @@
             and predate <![CDATA[<=]]>#{predateTo}
         </if>
 
-        <if test="sortName != null and sortOrder!=null">
+        <if test="sortName != null and sortName!='' and sortOrder!=null and sortOrder!=''">
             order by ${sortName} is null,${sortName} ${sortOrder}
         </if>
 
@@ -104,16 +104,16 @@
         SELECT
         count(*)
         FROM sys_menu where 1=1
-        <if test="id != null">
+        <if test="id != null and id !=''">
             and id = #{id}
         </if>
-        <if test="menuname != null">
+        <if test="menuname != null and menuname !=''">
             and menuname = #{menuname}
         </if>
-        <if test="sysid != null">
+        <if test="sysid != null and sysid !=''">
             and sysid = #{sysid}
         </if>
-        <if test="parentid != null">
+        <if test="parentid != null and parentid !=''">
             and parentid = #{parentid}
         </if>
         <if test="inuse != null">

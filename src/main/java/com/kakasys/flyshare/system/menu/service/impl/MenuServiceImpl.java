@@ -42,14 +42,14 @@ public class MenuServiceImpl implements MenuService
         {
             queryParams.setPageIndex((pageNumber - 1) * pageSize);
         }
-        queryParams.setInuse(true);
+        //queryParams.setInuse(true);
         return menuMapper.queryList(queryParams);
     }
 
     @Override
     public int count(MenuQueryParams queryParams)
     {
-        queryParams.setInuse(true);
+        //queryParams.setInuse(true);
         return menuMapper.count(queryParams);
     }
 }

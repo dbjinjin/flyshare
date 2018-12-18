@@ -100,13 +100,24 @@
                 showToggle: true,
                 cardView: false,
                 clickToSelect: true,
+                rowStyle: function (row, index) {
+                    //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
+                    var strclass = "";
+                    if (row.inuse === true) {
+                        strclass = 'success';
+                    }else {
+                        strclass = 'warning';
+                    }
+                    return { classes: strclass }
+                },
                 //得到查询的参数
                 queryParams: function (params) {
                     var temp = {
                         pageNumber: (params.offset / params.limit) + 1,//页码
                         pageSize: params.limit,   //每页数量
                         sortName: params.sort,      //排序列名
-                        sortOrder: params.order //排位命令（desc，asc）
+                        sortOrder: params.order, //排位命令（desc，asc）
+                        menuname:params.search
                     };
                     //return JSON.stringify(temp);
                     return temp;
@@ -218,53 +229,38 @@
     <div class="panel panel-default">
         <div class="panel-heading">查询条件</div>
         <div class="panel-body">
-            <form id="formSearch" class="form-horizontal">
-                <div class="form-group" style="margin-top:15px">
-                    <label class="control-label col-sm-1" for="txt_search_departmentname">名称</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="txt_search_departmentname">
-                    </div>
-                    <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="txt_search_statu">
-                    </div>
-                    <div class="col-sm-4" style="text-align:left;">
-                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询
-                        </button>
-                    </div>
-                </div>
-            </form>
+
+            <div id="toolbar" class="btn-group">
+                <button id="add" class="btn btn-info" title="添加">
+                    <i class="glyphicon glyphicon-plus"></i> 添加
+                </button>
+                <button id="del" class="btn btn-danger" title="删除" style="margin-left:15px;">
+                    <i class="glyphicon glyphicon-minus"></i> 删除
+                </button>
+                <button id="edit" class="btn btn-warning" title="编辑" style="margin-left:15px;">
+                    <i class="glyphicon glyphicon-pencil"></i> 编辑
+                </button>
+                <button id="enable" class="btn btn-success" title="启用" style="margin-left:15px;">
+                    <i class="glyphicon glyphicon-ok"></i> 启用
+                </button>
+                <button id="disable" class="btn btn-primary" title="停用" style="margin-left:15px;">
+                    <i class="glyphicon glyphicon-remove"></i> 停用
+                </button>
+            </div>
+
+            <div id="messageBox" class="alert alert-danger alert-dismissable hide" role="alert">
+                <button type="button" class="close" <#--data-dismiss="alert"--> aria-label="Close" onclick="hideInfo()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <strong id="messageBox_type"></strong>
+                <span id="messageBox_msg"></span>
+            </div>
+
+            <table id="table"></table>
+
         </div>
     </div>
 
-    <div id="toolbar" class="btn-group">
-        <button id="add" class="btn btn-default" title="添加">
-            <i class="glyphicon glyphicon-plus"></i> 添加
-        </button>
-        <button id="del" class="btn btn-default" title="删除">
-            <i class="glyphicon glyphicon-minus"></i> 删除
-        </button>
-        <button id="edit" class="btn btn-default" title="编辑">
-            <i class="glyphicon glyphicon-pencil"></i> 编辑
-        </button>
-        <button id="enable" class="btn btn-default" title="启用">
-            <i class="glyphicon glyphicon-ok"></i> 启用
-        </button>
-        <button id="disable" class="btn btn-default" title="停用">
-            <i class="glyphicon glyphicon-remove"></i> 启用
-        </button>
-    </div>
-
-    <div id="messageBox" class="alert alert-danger alert-dismissable hide" role="alert">
-        <button type="button" class="close" <#--data-dismiss="alert"--> aria-label="Close" onclick="hideInfo()">
-            <span aria-hidden="true">&times;</span>
-        </button>
-        <strong id="messageBox_type"></strong>
-        <span id="messageBox_msg"></span>
-    </div>
-
-
-    <table id="table"></table>
 
 </div>
 </body>
