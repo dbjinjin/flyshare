@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kakasys.flyshare.system.menu.dao.MenuMapper">
 
+
+
     <resultMap id="BaseResultMap" type="com.kakasys.flyshare.system.menu.model.Menu">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="menuname" property="menuname" jdbcType="VARCHAR"/>
@@ -59,6 +61,7 @@
         </foreach>
     </insert>
 
+
     <select id="queryList" resultMap="BaseResultMap"
             parameterType="com.kakasys.flyshare.system.menu.model.MenuQueryParams">
         SELECT
@@ -86,7 +89,43 @@
         <if test="predateTo != null">
             and predate <![CDATA[<=]]>#{predateTo}
         </if>
-        order by ordno asc
+
+        <if test="sortName != null and sortOrder!=null">
+            order by #{sortName} #{sortOrder}
+        </if>
+
+        <if test="pageNumber != null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer"
+            parameterType="com.kakasys.flyshare.system.menu.model.MenuQueryParams">
+        SELECT
+        count(*)
+        FROM sys_menu where 1=1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="menuname != null">
+            and menuname = #{menuname}
+        </if>
+        <if test="sysid != null">
+            and sysid = #{sysid}
+        </if>
+        <if test="parentid != null">
+            and parentid = #{parentid}
+        </if>
+        <if test="inuse != null">
+            and inuse = #{inuse}
+        </if>
+
+        <if test="predateFrom != null">
+            and predate <![CDATA[>=]]> #{predateFrom}
+        </if>
+        <if test="predateTo != null">
+            and predate <![CDATA[<=]]>#{predateTo}
+        </if>
     </select>
 
     <select id="queryChild" resultMap="BaseResultMap" parameterType="java.lang.String">

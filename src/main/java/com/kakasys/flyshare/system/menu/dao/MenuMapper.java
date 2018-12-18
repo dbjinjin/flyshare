@@ -32,4 +32,6 @@ public interface MenuMapper extends BaseMapper
     int delete(String id);
 
     int batchDelete(List<String> ids);
+
+    int count(MenuQueryParams queryParams);
 }

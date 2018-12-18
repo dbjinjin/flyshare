@@ -56,7 +56,7 @@ public class MenuTest extends BaseTest
     public void batchSave()
     {
         List<Menu> menus = new ArrayList<>();
-        int size = 1000;
+        int size = 14000;
         for (int i = 0; i < size; i++)
         {
             Menu menu = DataUtils.buildRandomData(Menu.class);

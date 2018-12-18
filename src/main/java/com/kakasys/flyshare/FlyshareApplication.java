@@ -22,7 +22,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @version 1.0
  */
 @SpringBootApplication
-@MapperScan("com.kakasys.flyshare")
+@MapperScan("com.kakasys.flyshare.**.dao")
 public class FlyshareApplication extends SpringBootServletInitializer
 {
     private static Logger logger = LogManager.getLogger(FlyshareApplication.class);
