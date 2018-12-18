@@ -91,7 +91,7 @@
         </if>
 
         <if test="sortName != null and sortOrder!=null">
-            order by #{sortName} #{sortOrder}
+            order by ${sortName} is null,${sortName} ${sortOrder}
         </if>
 
         <if test="pageNumber != null and pageSize!=null">

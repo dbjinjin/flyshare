@@ -36,10 +36,10 @@
                 dataType: 'json',
                 pagination: true,// 是否显示分页
                 sortable: true,//是否启用排序
-                cache: false,//是否启用缓存
                 sortOrder: "desc",//排序方式
-                sidePagination: "server",//服务端分页
                 sortName: "id",//排序字段
+                cache: false,//是否启用缓存
+                sidePagination: "server",//服务端分页
                 strictSearch: true,
                 pageNumber: 1,
                 pageSize: 10,
@@ -68,16 +68,17 @@
                     visible: true                  //是否显示复选框
                 }, {
                     field: 'id',
-                    title: 'Item ID',
+                    title: 'ID',
                     align: 'center',
-                    visible: false
+                    visible: false ,
+                    titleTooltip: "主键"
                 }, {
                     field: 'menuname',
                     title: '菜单名称',
                     align: 'center'
                 }, {
                     field: 'menuurl',
-                    title: '链接',
+                    title: '菜单URL',
                     align: 'center'
                 }, {
                     field: 'menustyle',
@@ -113,22 +114,19 @@
                     field: 'predate',
                     title: '制单时间',
                     formatter: dateFormatProcess,
-                    sortable: true,
-                    align: 'center'
+                    align: 'center',
+                    sortable: true
                 }, {
-                    field: 'predate',
+                    field: 'modifydate',
                     title: '修改时间',
                     formatter: dateFormatProcess,
-                    align: 'center'
-                }, {
-                    field: 'operaton',
-                    title: '操作',
                     align: 'center',
-                    events: registerEvents,//给按钮注册事件
-                    formatter: addButtons //表格中增加按钮
+                    order: 'desc',
+                    sortable: true
                 }],
                 onLoadSuccess: function () {
-
+                    //
+                    //$(".bs-checkbox").css({'text-aligin':'center','vertical-align':'middle'});
                 },
                 onLoadError: function () {
 
@@ -197,6 +195,15 @@
             </button>
             <button id="del" class="btn btn-default" title="删除">
                 <i class="glyphicon glyphicon-minus"></i> 删除
+            </button>
+            <button id="edit" class="btn btn-default" title="编辑">
+                <i class="glyphicon glyphicon-pencil"></i> 编辑
+            </button>
+            <button id="enable" class="btn btn-default" title="启用">
+                <i class="glyphicon glyphicon-ok"></i> 启用
+            </button>
+            <button id="disable" class="btn btn-default" title="停用">
+                <i class="glyphicon glyphicon-remove"></i> 启用
             </button>
         </div>
         <table id="table"></table>
