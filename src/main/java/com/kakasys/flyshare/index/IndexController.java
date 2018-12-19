@@ -35,4 +35,10 @@ public class IndexController extends BaseController
     {
         return "index";
     }
+
+    @RequestMapping(value = "/ztree.html", method = RequestMethod.GET)
+    public String ztreePageView()
+    {
+        return "ztree";
+    }
 }
