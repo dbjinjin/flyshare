@@ -14,26 +14,79 @@
     <script src="import/bootstrap/js/bootstrap.min.js"></script>
     <script src="import/bootstrap-table/bootstrap-table.min.js"></script>
     <script src="import/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="import/js/flyshare.js"></script>
 
     <script>
-
         var bootTable;
-
         $(function () {
+
             initTable();
 
+
+            /**
+             * 新增
+             */
+            $("#add").on("click", function () {
+                $("#addModal").modal({show: true, remote: "./menu-add.html"});
+            });
+
+            /**
+             * 编辑
+             */
             $("#edit").on("click", function () {
                 var rows = $("#table").bootstrapTable('getSelections');
                 if (rows.length === 0) {
-
+                    showInfoDialog("请选择编辑项!");
+                } else {
+                    $("#editModal").modal({show: true, remote: "./menu-edit.html?id=" + rows[0].id});
                 }
             });
 
+            /**
+             * 删除
+             */
+            $("#del").on("click", function () {
+                var rows = $("#table").bootstrapTable('getSelections');
+                if (rows.length === 0) {
+                    showInfoDialog("请选择删除项!");
+                }
+            });
+
+            /**
+             * 启用
+             */
+            $("#enable").on("click", function () {
+                var rows = $("#table").bootstrapTable('getSelections');
+                if (rows.length === 0) {
+                    showInfoDialog("请选择【启用】项!");
+                }else{
+                    showConrimDialog("是否确定【启用】选中用户？");
+                }
+            });
+
+            /**
+             * 停用
+             */
+            $("#disable").on("click", function () {
+                var rows = $("#table").bootstrapTable('getSelections');
+                if (rows.length === 0) {
+                    showInfoDialog("请选择【停用】项!");
+                }else{
+                    showConrimDialog("是否确定【停用】选中用户？");
+                }
+            });
+
+
+            $('#editModal').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+
+            $('#addModal').on('hidden.bs.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+
         });
-
-
         var searchText = $('.search').find('input').val();
-
         function initTable() {
             bootTable = $('#table').bootstrapTable({
                 url: './menu-list',
@@ -43,6 +96,7 @@
                 detailView: false,
                 striped: true,
                 dataType: 'json',
+                singleSelect: true,
                 pagination: true,// 是否显示分页
                 sortable: true,//是否启用排序
                 sortOrder: "desc",//排序方式
@@ -144,16 +198,6 @@
             });
         }
 
-        function confirmDelete() {
-            $('#deleteModal').modal('hide');
-            window.console.log("删除确定了?");
-        }
-
-        function confirmAdd() {
-            $('#deleteModal').modal('hide');
-            window.console.log("删除确定了?");
-        }
-
     </script>
 </head>
 <body>
@@ -163,13 +207,14 @@
         <div class="panel-body">
 
             <div id="toolbar" class="btn-group">
-                <button id="add" class="btn btn-info" title="添加" data-toggle="modal"  data-target="#addModal">
+                <button id="add" class="btn btn-info" title="添加" <#--data-toggle="modal" data-target="#addModal" href="./menu-add.html"-->>
                     <i class="glyphicon glyphicon-plus"></i> 添加
                 </button>
-                <button id="del" class="btn btn-danger" title="删除" style="margin-left:15px;" data-toggle="modal"  data-target="#deleteModal">
+                <button id="del" class="btn btn-danger" title="删除" style="margin-left:15px;" <#--data-toggle="modal" data-title="确定" data-content="是否确定删除选中数据?"-->>
                     <i class="glyphicon glyphicon-minus"></i> 删除
                 </button>
-                <button id="edit" class="btn btn-warning" title="编辑" style="margin-left:15px;" data-toggle="modal"  data-target="#editModal">
+                <button id="edit" class="btn btn-warning" title="编辑" style="margin-left:15px;">
+
                     <i class="glyphicon glyphicon-pencil"></i> 编辑
                 </button>
                 <button id="enable" class="btn btn-success" title="启用" style="margin-left:15px;">
@@ -190,97 +235,20 @@
     <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">新增菜单</h4>
-                </div>
-                <div class="modal-body">
-
-                    <div class="form-group">
-                        <label for="txt_departmentname">部门名称</label>
-                        <input type="text" name="txt_departmentname" class="form-control" id="txt_departmentname"
-                               placeholder="部门名称">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txt_parentdepartment">上级部门</label>
-                        <input type="text" name="txt_parentdepartment" class="form-control" id="txt_parentdepartment"
-                               placeholder="上级部门">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txt_departmentlevel">部门级别</label>
-                        <input type="text" name="txt_departmentlevel" class="form-control" id="txt_departmentlevel"
-                               placeholder="部门级别">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="txt_statu">描述</label>
-                        <input type="text" name="txt_statu" class="form-control" id="txt_statu" placeholder="状态">
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="confirmAdd()">确定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                </div>
             </div>
         </div>
     </div>
 
     <!-- 编辑 -->
-    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">新增菜单</h4>
-                </div>
-                <div class="modal-body">
-
-                    <form class="form-horizontal" role="form">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">Email</label>
-                            <div class="col-sm-10">
-                                <p class="form-control-static">email@example.com</p>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputPassword" class="col-sm-2 control-label">密码</label>
-                            <div class="col-sm-10">
-                                <input type="password" class="form-control" id="inputPassword" placeholder="请输入密码">
-                            </div>
-                        </div>
-                    </form>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="confirmAdd()">确定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                </div>
             </div>
         </div>
     </div>
 
-
-    <!-- 删除确定框 -->
-    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title" id="myModalLabel">确定框</h4>
-                </div>
-                <div class="modal-body">
-                    是否确定删除选中数据?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">确定</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <#include "/common/dialog.ftl"/>
 
 </div>
 </body>

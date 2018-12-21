@@ -2,20 +2,16 @@ package com.kakasys.flyshare.system.menu.web;
 
 import com.kakasys.flyshare.base.PageInfo;
 import com.kakasys.flyshare.base.web.BaseController;
-import com.kakasys.flyshare.system.menu.dao.MenuMapper;
+import com.kakasys.flyshare.system.dict.model.DictDef;
+import com.kakasys.flyshare.system.dict.service.DictService;
 import com.kakasys.flyshare.system.menu.model.Menu;
 import com.kakasys.flyshare.system.menu.model.MenuQueryParams;
 import com.kakasys.flyshare.system.menu.service.MenuService;
-import com.kakasys.rootbase.date.FormatStyle;
-import com.kakasys.rootbase.date.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -34,14 +30,17 @@ import java.util.List;
 @Controller
 public class MenuController extends BaseController
 {
-
     private final MenuService menuService;
 
+    private final DictService dictService;
+
     @Autowired
-    public MenuController(MenuService menuService)
+    public MenuController(MenuService menuService, DictService dictService)
     {
         this.menuService = menuService;
+        this.dictService = dictService;
     }
+
 
     @RequestMapping(value = "/menu-list", method = RequestMethod.POST)
     @ResponseBody
@@ -53,5 +52,26 @@ public class MenuController extends BaseController
         info.setTotal(count);
         info.setRows(list);
         return info;
+    }
+
+    @RequestMapping(value = "/menu-edit.html")
+    public ModelAndView menuEditPage(@RequestParam String id)
+    {
+        logger.warn("{}", id);
+        Menu menu = menuService.findById(id);
+        DictDef dict = dictService.loadDictInfo("00100010");
+        ModelAndView view = new ModelAndView();
+        view.addObject("menu", menu);
+        view.addObject("dict", dict);
+        view.setViewName("/main/menu/edit");
+        return view;
+    }
+
+    @RequestMapping(value = "/menu-add.html")
+    public ModelAndView menuAddPage()
+    {
+        ModelAndView view = new ModelAndView();
+        view.setViewName("/main/menu/add");
+        return view;
     }
 }

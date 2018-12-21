@@ -42,7 +42,6 @@ public class MenuServiceImpl implements MenuService
         {
             queryParams.setPageIndex((pageNumber - 1) * pageSize);
         }
-        //queryParams.setInuse(true);
         return menuMapper.queryList(queryParams);
     }
 
@@ -51,5 +50,14 @@ public class MenuServiceImpl implements MenuService
     {
         //queryParams.setInuse(true);
         return menuMapper.count(queryParams);
+    }
+
+    @Override
+    public Menu findById(String id)
+    {
+        MenuQueryParams queryParams = new MenuQueryParams();
+        queryParams.setId(id);
+        List<Menu> menus = menuMapper.queryList(queryParams);
+        return (menus != null && menus.size() > 0) ? menus.get(0) : null;
     }
 }

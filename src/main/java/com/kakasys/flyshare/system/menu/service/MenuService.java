@@ -23,4 +23,6 @@ public interface MenuService
     List<Menu> queryList(MenuQueryParams queryParams);
 
     int count(MenuQueryParams queryParams);
+
+    Menu findById(String id);
 }

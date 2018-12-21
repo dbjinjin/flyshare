@@ -30,13 +30,13 @@ public abstract class BaseTest
     protected ObjectMapper mapper = new ObjectMapper();
 
     @Test
-    public abstract void save() throws JsonProcessingException;
+    public abstract void save();
 
     @Test
     public abstract void batchSave();
 
     @Test
-    public abstract void queryList() throws JsonProcessingException;
+    public abstract void queryList();
 
     @Test
     public abstract void delete();

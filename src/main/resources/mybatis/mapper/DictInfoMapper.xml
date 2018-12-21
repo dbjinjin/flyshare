@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kakasys.flyshare.system.dict.dao.DictInfoMapper">
+
+
+
+    <resultMap id="BaseResultMap" type="com.kakasys.flyshare.system.dict.model.DictInfo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="langname1" property="langname1" jdbcType="VARCHAR"/>
+        <result column="langname2" property="langname2" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="sortidx" property="sortidx" jdbcType="INTEGER"/>
+        <result column="inuse" property="inuse" jdbcType="BIT"/>
+        <result column="predate" property="predate" jdbcType="TIMESTAMP"/>
+        <result column="modifydate" property="modifydate" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,
+        code,
+        langname1,
+        langname2,
+        remark,
+        sortidx,
+        inuse,
+        predate,
+        modifydate
+    </sql>
+
+    <insert id="save" parameterType="com.kakasys.flyshare.system.dict.model.DictInfo">
+        <selectKey keyProperty="id" resultType="String" order="BEFORE">
+            SELECT upper(REPLACE(UUID(), '-', ''))
+        </selectKey>
+        INSERT INTO sys_dict_info
+        (<include refid="Base_Column_List"/>)
+        VALUES
+        (#{id}, #{code}, #{langname1}, #{langname2}, #{remark}, #{sortidx},#{inuse},
+        #{predate,jdbcType=TIMESTAMP},#{modifydate,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="batchSave">
+        INSERT INTO sys_dict_info
+        (<include refid="Base_Column_List"/>)
+        VALUES
+        <foreach collection="list" item="info" separator=",">
+            (
+            #{info.id},
+            #{info.code}, #{info.langname1}, #{info.langname2}, #{info.remark}, #{info.sortidx},
+            #{info.inuse},#{info.predate,jdbcType=TIMESTAMP},#{info.modifydate,jdbcType=TIMESTAMP}
+            )
+        </foreach>
+    </insert>
+
+
+    <select id="queryInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM sys_dict_info where 1=1 and inuse=true and id=#{id} order by sortidx desc
+    </select>
+
+</mapper>
