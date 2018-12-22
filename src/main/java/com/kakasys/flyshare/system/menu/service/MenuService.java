@@ -25,4 +25,6 @@ public interface MenuService
     int count(MenuQueryParams queryParams);
 
     Menu findById(String id);
+
+    boolean unableMenu(String id);
 }

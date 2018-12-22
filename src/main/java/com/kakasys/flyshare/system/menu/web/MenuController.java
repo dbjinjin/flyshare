@@ -7,6 +7,8 @@ import com.kakasys.flyshare.system.dict.service.DictService;
 import com.kakasys.flyshare.system.menu.model.Menu;
 import com.kakasys.flyshare.system.menu.model.MenuQueryParams;
 import com.kakasys.flyshare.system.menu.service.MenuService;
+import com.kakasys.rootbase.invoke.model.InvokeResult;
+import com.kakasys.rootbase.invoke.util.InvokeResultUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -73,5 +75,13 @@ public class MenuController extends BaseController
         ModelAndView view = new ModelAndView();
         view.setViewName("/main/menu/add");
         return view;
+    }
+
+    @RequestMapping(value = "/menu-del.html")
+    @ResponseBody
+    public InvokeResult menuDel(String id)
+    {
+        boolean result = menuService.unableMenu(id);
+        return InvokeResultUtils.buildSuccResult("删除成功");
     }
 }

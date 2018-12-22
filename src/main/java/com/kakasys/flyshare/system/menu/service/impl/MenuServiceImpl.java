@@ -60,4 +60,11 @@ public class MenuServiceImpl implements MenuService
         List<Menu> menus = menuMapper.queryList(queryParams);
         return (menus != null && menus.size() > 0) ? menus.get(0) : null;
     }
+
+    @Override
+    public boolean unableMenu(String id)
+    {
+        return true;
+    }
+
 }

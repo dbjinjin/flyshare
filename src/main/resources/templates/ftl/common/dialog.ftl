@@ -30,8 +30,8 @@
                 <span style="font-size: 16px"></span>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">确定</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" id="confirm-Oky">确定</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="confirm-Cancel">取消</button>
             </div>
         </div>
     </div>

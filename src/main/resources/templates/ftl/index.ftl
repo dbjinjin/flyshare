@@ -7,21 +7,22 @@
     <meta name="keyword" content="飞享项目 SpringBoot Java开发"/>
     <link rel="shortcut icon" href="ico/favicon.png"/>
 
-    <link rel="stylesheet" href="import/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="import/bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-table/bootstrap-table.min.css">
+    <link rel="stylesheet" href="bootstrap-dialog/css/bootstrap-dialog.css">
 
-    <script src="import/jquery/jquery.min.js"></script>
-    <script src="import/bootstrap/js/bootstrap.min.js"></script>
-    <script src="import/bootstrap-table/bootstrap-table.min.js"></script>
-    <script src="import/bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
-    <script src="import/js/flyshare.js"></script>
+    <script src="jquery/jquery.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap-table/bootstrap-table.min.js"></script>
+    <script src="bootstrap-table/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="bootstrap-dialog/js/bootstrap-dialog.js"></script>
+
 
     <script>
         var bootTable;
         $(function () {
 
             initTable();
-
 
             /**
              * 新增
@@ -36,7 +37,19 @@
             $("#edit").on("click", function () {
                 var rows = $("#table").bootstrapTable('getSelections');
                 if (rows.length === 0) {
-                    showInfoDialog("请选择编辑项!");
+                    BootstrapDialog.show({
+                        title: '提示',
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_INFO,
+                        message: '请选择编辑项!',
+                        buttons: [{
+                            label: '确定',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    });
+
                 } else {
                     $("#editModal").modal({show: true, remote: "./menu-edit.html?id=" + rows[0].id});
                 }
@@ -48,7 +61,37 @@
             $("#del").on("click", function () {
                 var rows = $("#table").bootstrapTable('getSelections');
                 if (rows.length === 0) {
-                    showInfoDialog("请选择删除项!");
+                    BootstrapDialog.show({
+                        title: '提示',
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_INFO,
+                        message: '请选择删除项!',
+                        buttons: [{
+                            label: '确定',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    });
+                } else {
+                    BootstrapDialog.confirm({
+                        title: '确定',
+                        message: '是否确定【删除】选中用户？',
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_WARNING,
+                        closable: true, // <-- Default value is false
+                        draggable: true, // <-- Default value is false
+                        btnCancelLabel: '取消', // <-- Default value is 'Cancel',
+                        btnOKLabel: '确定', // <-- Default value is 'OK',
+                        btnOKClass: 'btn-danger', // <-- If you didn't specify it, dialog type will be used,
+                        callback: function (result) {
+                            if (result) {
+
+                            } else {
+
+                            }
+                        }
+                    });
                 }
             });
 
@@ -58,9 +101,40 @@
             $("#enable").on("click", function () {
                 var rows = $("#table").bootstrapTable('getSelections');
                 if (rows.length === 0) {
-                    showInfoDialog("请选择【启用】项!");
-                }else{
-                    showConrimDialog("是否确定【启用】选中用户？");
+                    BootstrapDialog.show({
+                        title: '提示',
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_INFO,
+                        closable: true,
+                        closeByBackdrop: false,
+                        closeByKeyboard: false,
+                        message: '请选择【启用】项!',
+                        buttons: [{
+                            label: '确定',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    });
+                } else {
+                    BootstrapDialog.confirm({
+                        title: '确定',
+                        message: '是否确定【启用】选中用户？',
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_WARNING,
+                        closable: true, // <-- Default value is false
+                        draggable: true, // <-- Default value is false
+                        btnCancelLabel: '取消', // <-- Default value is 'Cancel',
+                        btnOKLabel: '确定', // <-- Default value is 'OK',
+                        btnOKClass: 'btn-danger', // <-- If you didn't specify it, dialog type will be used,
+                        callback: function (result) {
+                            if (result) {
+
+                            } else {
+
+                            }
+                        }
+                    });
                 }
             });
 
@@ -70,9 +144,47 @@
             $("#disable").on("click", function () {
                 var rows = $("#table").bootstrapTable('getSelections');
                 if (rows.length === 0) {
-                    showInfoDialog("请选择【停用】项!");
-                }else{
-                    showConrimDialog("是否确定【停用】选中用户？");
+                    BootstrapDialog.show({
+                        title: '提示',
+                        size: BootstrapDialog.SIZE_SMALL,
+                        type: BootstrapDialog.TYPE_INFO,
+                        message: '请选择【停用】项!',
+                        buttons: [{
+                            label: '确定',
+                            action: function (dialog) {
+                                dialog.close();
+                            }
+                        }]
+                    });
+                } else {
+                    BootstrapDialog.confirm({
+                        title: '确定',
+                        message: '是否确定【停用】选中用户？',
+                        type: BootstrapDialog.TYPE_WARNING,
+                        size: BootstrapDialog.SIZE_SMALL,
+                        closable: true,
+                        draggable: true,
+                        btnCancelLabel: '取消',
+                        btnOKLabel: '确定',
+                        btnOKClass: 'btn-danger',
+                        callback: function (result) {
+                            if (result) {
+                                var id = rows[0].id;
+                                $.ajax({
+                                    type: "POST",
+                                    url: "./menu-del.html",
+                                    data: {
+                                        id: id
+                                    },
+                                    dataType: "json",
+                                    success: function(data)
+                                    {
+                                        bootTable.('refresh');
+                                    }
+                                });
+                            }
+                        }
+                    });
                 }
             });
 
@@ -87,6 +199,7 @@
 
         });
         var searchText = $('.search').find('input').val();
+
         function initTable() {
             bootTable = $('#table').bootstrapTable({
                 url: './menu-list',
@@ -207,10 +320,12 @@
         <div class="panel-body">
 
             <div id="toolbar" class="btn-group">
-                <button id="add" class="btn btn-info" title="添加" <#--data-toggle="modal" data-target="#addModal" href="./menu-add.html"-->>
+                <button id="add" class="btn btn-info"
+                        title="添加" <#--data-toggle="modal" data-target="#addModal" href="./menu-add.html"-->>
                     <i class="glyphicon glyphicon-plus"></i> 添加
                 </button>
-                <button id="del" class="btn btn-danger" title="删除" style="margin-left:15px;" <#--data-toggle="modal" data-title="确定" data-content="是否确定删除选中数据?"-->>
+                <button id="del" class="btn btn-danger" title="删除"
+                        style="margin-left:15px;" <#--data-toggle="modal" data-title="确定" data-content="是否确定删除选中数据?"-->>
                     <i class="glyphicon glyphicon-minus"></i> 删除
                 </button>
                 <button id="edit" class="btn btn-warning" title="编辑" style="margin-left:15px;">
@@ -247,8 +362,6 @@
             </div>
         </div>
     </div>
-
-    <#include "/common/dialog.ftl"/>
 
 </div>
 </body>
