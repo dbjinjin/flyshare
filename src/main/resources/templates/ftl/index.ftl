@@ -129,9 +129,21 @@
                         btnOKClass: 'btn-danger', // <-- If you didn't specify it, dialog type will be used,
                         callback: function (result) {
                             if (result) {
-
-                            } else {
-
+                                var id = rows[0].id;
+                                $.ajax({
+                                    type: "POST",
+                                    url: "./menu-update.html",
+                                    data: {
+                                        id: id,
+                                        inuse: true
+                                    },
+                                    dataType: "json",
+                                    success: function(data)
+                                    {
+                                        //刷新
+                                        $('#table').bootstrapTable('refresh');
+                                    }
+                                });
                             }
                         }
                     });
@@ -172,14 +184,16 @@
                                 var id = rows[0].id;
                                 $.ajax({
                                     type: "POST",
-                                    url: "./menu-del.html",
+                                    url: "./menu-update.html",
                                     data: {
-                                        id: id
+                                        id: id,
+                                        inuse: false
                                     },
                                     dataType: "json",
                                     success: function(data)
                                     {
-                                        bootTable.('refresh');
+                                        //刷新
+                                        $('#table').bootstrapTable('refresh');
                                     }
                                 });
                             }

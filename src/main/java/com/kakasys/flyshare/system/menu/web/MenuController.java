@@ -5,6 +5,7 @@ import com.kakasys.flyshare.base.web.BaseController;
 import com.kakasys.flyshare.system.dict.model.DictDef;
 import com.kakasys.flyshare.system.dict.service.DictService;
 import com.kakasys.flyshare.system.menu.model.Menu;
+import com.kakasys.flyshare.system.menu.model.MenuOptParams;
 import com.kakasys.flyshare.system.menu.model.MenuQueryParams;
 import com.kakasys.flyshare.system.menu.service.MenuService;
 import com.kakasys.rootbase.invoke.model.InvokeResult;
@@ -81,7 +82,20 @@ public class MenuController extends BaseController
     @ResponseBody
     public InvokeResult menuDel(String id)
     {
-        boolean result = menuService.unableMenu(id);
         return InvokeResultUtils.buildSuccResult("删除成功");
+    }
+
+    @RequestMapping(value = "/menu-update.html")
+    @ResponseBody
+    public InvokeResult updateMenu(MenuOptParams optParams)
+    {
+        boolean result = menuService.updateMenu(optParams);
+        if (result)
+        {
+            return InvokeResultUtils.buildSuccResult("更新成功");
+        } else
+        {
+            return InvokeResultUtils.buildFailResult("更新失败");
+        }
     }
 }

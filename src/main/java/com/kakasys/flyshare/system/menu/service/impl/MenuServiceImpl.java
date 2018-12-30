@@ -2,8 +2,10 @@ package com.kakasys.flyshare.system.menu.service.impl;
 
 import com.kakasys.flyshare.system.menu.dao.MenuMapper;
 import com.kakasys.flyshare.system.menu.model.Menu;
+import com.kakasys.flyshare.system.menu.model.MenuOptParams;
 import com.kakasys.flyshare.system.menu.model.MenuQueryParams;
 import com.kakasys.flyshare.system.menu.service.MenuService;
+import com.kakasys.rootbase.date.util.DateUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -62,9 +64,11 @@ public class MenuServiceImpl implements MenuService
     }
 
     @Override
-    public boolean unableMenu(String id)
+    public boolean updateMenu(MenuOptParams optParams)
     {
-        return true;
+        optParams.setModifydate(DateUtils.getServerDate());
+        int cnt = menuMapper.update(optParams);
+        return cnt > 0;
     }
 
 }

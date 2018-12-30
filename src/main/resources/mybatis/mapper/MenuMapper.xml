@@ -148,4 +148,12 @@
         </foreach>
     </delete>
 
+    <update id="update" parameterType="com.kakasys.flyshare.system.menu.model.MenuOptParams">
+        update sys_menu
+        <set>
+            <if test="inuse != null">inuse=#{inuse},</if>
+            <if test="modifydate != null">modifydate=#{modifydate},</if>
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

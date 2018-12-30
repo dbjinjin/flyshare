@@ -1,6 +1,7 @@
 package com.kakasys.flyshare.system.menu.service;
 
 import com.kakasys.flyshare.system.menu.model.Menu;
+import com.kakasys.flyshare.system.menu.model.MenuOptParams;
 import com.kakasys.flyshare.system.menu.model.MenuQueryParams;
 
 import java.util.List;
@@ -26,5 +27,5 @@ public interface MenuService
 
     Menu findById(String id);
 
-    boolean unableMenu(String id);
+    boolean updateMenu(MenuOptParams optParams);
 }

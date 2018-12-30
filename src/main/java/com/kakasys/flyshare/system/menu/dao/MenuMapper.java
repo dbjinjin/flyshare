@@ -1,6 +1,7 @@
 package com.kakasys.flyshare.system.menu.dao;
 
 import com.kakasys.flyshare.system.menu.model.Menu;
+import com.kakasys.flyshare.system.menu.model.MenuOptParams;
 import com.kakasys.flyshare.system.menu.model.MenuQueryParams;
 import com.kakasys.rootbase.query.dao.BaseMapper;
 
@@ -34,4 +35,6 @@ public interface MenuMapper extends BaseMapper
     int batchDelete(List<String> ids);
 
     int count(MenuQueryParams queryParams);
+
+    int update(MenuOptParams optParams);
 }
