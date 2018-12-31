@@ -99,7 +99,55 @@
         <if test="modifydateTo != null">
             and modifydate <![CDATA[<=]]>#{modifydateTo}
         </if>
-        order by predate desc
+
+        <if test="sortName != null and sortName!='' and sortOrder!=null and sortOrder!=''">
+            order by ${sortName} is null,${sortName} ${sortOrder}
+        </if>
+
+        <if test="pageNumber != null and pageSize!=null">
+            limit #{pageIndex},#{pageSize}
+        </if>
+
+    </select>
+
+    <select id="count" resultType="java.lang.Integer"
+            parameterType="com.kakasys.flyshare.system.user.model.UserQueryParams">
+        select
+        count(*)
+        from sys_user where 1=1
+        <if test="id != null">
+            and id = #{id}
+        </if>
+        <if test="username != null">
+            and username = #{username}
+        </if>
+        <if test="password != null">
+            and password = #{password}
+        </if>
+        <if test="nickname != null">
+            and nickname = #{nickname}
+        </if>
+        <if test="idno != null">
+            and idno = #{idno}
+        </if>
+        <if test="telephone != null">
+            and telephone = #{telephone}
+        </if>
+        <if test="inuse != null">
+            and inuse = #{inuse}
+        </if>
+        <if test="predateFrom != null">
+            and predate <![CDATA[>=]]> #{predateFrom}
+        </if>
+        <if test="predateTo != null">
+            and predate <![CDATA[<=]]>#{predateTo}
+        </if>
+        <if test="modifydateFrom != null">
+            and modifydate <![CDATA[>=]]> #{modifydateFrom}
+        </if>
+        <if test="modifydateTo != null">
+            and modifydate <![CDATA[<=]]>#{modifydateTo}
+        </if>
     </select>
 
     <delete id="delete" parameterType="java.lang.String">

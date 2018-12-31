@@ -38,19 +38,12 @@ public class MenuServiceImpl implements MenuService
         {
             queryParams = new MenuQueryParams();
         }
-        Integer pageNumber = queryParams.getPageNumber();
-        Integer pageSize = queryParams.getPageSize();
-        if (pageNumber != null && pageSize != null)
-        {
-            queryParams.setPageIndex((pageNumber - 1) * pageSize);
-        }
         return menuMapper.queryList(queryParams);
     }
 
     @Override
     public int count(MenuQueryParams queryParams)
     {
-        //queryParams.setInuse(true);
         return menuMapper.count(queryParams);
     }
 

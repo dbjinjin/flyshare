@@ -31,6 +31,7 @@ import java.util.List;
  * @version 1.0
  */
 @Controller
+@CrossOrigin
 public class MenuController extends BaseController
 {
     private final MenuService menuService;
@@ -45,7 +46,7 @@ public class MenuController extends BaseController
     }
 
 
-    @RequestMapping(value = "/menu-list", method = RequestMethod.POST)
+    @RequestMapping(value = "/menu-list", method = {RequestMethod.POST, RequestMethod.GET})
     @ResponseBody
     public PageInfo queryList(@RequestBody MenuQueryParams menuQueryParams /*Integer pageNumber, Integer pageSize, String sortName, String sortOrder*/)
     {

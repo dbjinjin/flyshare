@@ -2,6 +2,7 @@ package com.kakasys.flyshare.base.web;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * <p>标题： </p>

@@ -1,9 +1,21 @@
 package com.kakasys.flyshare.system.user.web;
 
 import com.kakasys.flyshare.base.web.BaseController;
+import com.kakasys.flyshare.system.user.model.User;
+import com.kakasys.flyshare.system.user.model.UserQueryParams;
+import com.kakasys.flyshare.system.user.service.UserService;
+import com.kakasys.rootbase.invoke.model.InvokeResult;
+import com.kakasys.rootbase.invoke.util.InvokeResultUtils;
+import com.kakasys.rootbase.page.model.PageInfo;
+import com.kakasys.rootbase.page.util.PageUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 /**
  * <p>标题： </p>
@@ -19,13 +31,24 @@ import org.springframework.web.servlet.ModelAndView;
  * @version 1.0
  */
 @Controller
+@CrossOrigin
 public class UserController extends BaseController
 {
-    @RequestMapping(value = "/login-succ.html")
-    public ModelAndView loginPage()
+    private UserService userService;
+
+    @Autowired
+    public UserController(UserService userService)
     {
-        ModelAndView loginSuccPage = new ModelAndView();
-        loginSuccPage.setViewName("/main/index");
-        return loginSuccPage;
+        this.userService = userService;
+    }
+
+    @RequestMapping(value = "/user-list")
+    @ResponseBody
+    public InvokeResult userLis(@RequestBody UserQueryParams queryParams)
+    {
+        int count = userService.count(queryParams);
+        List<User> userList = userService.queryList(queryParams);
+        PageInfo pageInfo = PageUtils.buildPageInfo(queryParams, count);
+        return InvokeResultUtils.buildSuccResult("查询成功", userList, pageInfo);
     }
 }
