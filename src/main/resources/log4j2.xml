@@ -2,7 +2,7 @@
 <Configuration>
 
     <properties>
-        <property name="LOG_HOME">logs/flyshare</property>
+        <property name="LOG_HOME">/usr/log</property>
     </properties>
 
     <Appenders>
