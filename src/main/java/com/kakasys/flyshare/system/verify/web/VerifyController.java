@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 
 /**
  * <p>标题： </p>
@@ -45,6 +45,10 @@ public class VerifyController extends BaseController
         imageSize.setHeight(height);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         String code = DataUtils.buildRandomCode(4).toUpperCase();
+        HttpSession session = request.getSession();
+        String sessionId = session.getId();
+        logger.info("SessionId:{}", sessionId);
+        session.setAttribute("VerifyCode", code);
         BufferedImage bufferedImage = CodeUtil.genVerifyCode(imageSize, code);
         ImageIO.write(bufferedImage, "jpg", out);
         return out.toByteArray();

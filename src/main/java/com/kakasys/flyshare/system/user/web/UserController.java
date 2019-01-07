@@ -44,11 +44,12 @@ public class UserController extends BaseController
 
     @RequestMapping(value = "/user-list")
     @ResponseBody
-    public InvokeResult userLis(@RequestBody UserQueryParams queryParams)
+    public InvokeResult userList(@RequestBody UserQueryParams queryParams)
     {
         int count = userService.count(queryParams);
         List<User> userList = userService.queryList(queryParams);
         PageInfo pageInfo = PageUtils.buildPageInfo(queryParams, count);
         return InvokeResultUtils.buildSuccResult("查询成功", userList, pageInfo);
     }
+
 }

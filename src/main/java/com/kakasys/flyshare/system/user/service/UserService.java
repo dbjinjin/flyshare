@@ -24,4 +24,6 @@ public interface UserService
     List<User> queryList(UserQueryParams queryParams);
 
     int count(UserQueryParams queryParams);
+
+     User loginCheck(String username,String password);
 }

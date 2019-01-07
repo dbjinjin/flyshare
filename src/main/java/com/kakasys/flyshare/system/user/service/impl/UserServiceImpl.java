@@ -44,4 +44,14 @@ public class UserServiceImpl implements UserService
     {
         return userMapper.count(queryParams);
     }
+
+    @Override
+    public User loginCheck(String username, String password)
+    {
+        UserQueryParams queryParams = new UserQueryParams();
+        queryParams.setUsername(username);
+        queryParams.setPassword(password);
+        List<User> userList = userMapper.queryList(queryParams);
+        return (userList != null && userList.size() > 0) ? userList.get(0) : null;
+    }
 }
