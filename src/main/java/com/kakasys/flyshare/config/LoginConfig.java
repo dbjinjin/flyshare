@@ -25,7 +25,7 @@ public class LoginConfig extends WebMvcConfigurationSupport
     @Override
     protected void addInterceptors(InterceptorRegistry registry)
     {
-        //registry.addInterceptor(new LogInterceptor()).addPathPatterns("/**");
+        registry.addInterceptor(new LogInterceptor()).addPathPatterns("/**");
         super.addInterceptors(registry);
     }
 }
