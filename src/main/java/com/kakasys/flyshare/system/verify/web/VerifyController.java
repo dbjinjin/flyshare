@@ -44,7 +44,7 @@ public class VerifyController extends BaseController
         imageSize.setWidth(width);
         imageSize.setHeight(height);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        String code = DataUtils.buildRandomCode(4).toUpperCase();
+        String code = DataUtils.buildRandomCode(4, 0).toUpperCase();
         HttpSession session = request.getSession();
         String sessionId = session.getId();
         logger.info("SessionId:{}", sessionId);
