@@ -24,21 +24,5 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class IndexController extends BaseController
 {
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String indexView()
-    {
-        return "redirect:/index.html";
-    }
 
-    @RequestMapping(value = "/index.html", method = RequestMethod.GET)
-    public String indexPageView()
-    {
-        return "index";
-    }
-
-    @RequestMapping(value = "/ztree.html", method = RequestMethod.GET)
-    public String ztreePageView()
-    {
-        return "ztree";
-    }
 }

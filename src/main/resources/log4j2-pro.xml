@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+    <properties>
+        <property name="LOG_HOME">/usr/log/app</property>
+    </properties>
+
+    <Appenders>
+
+        <!-- 控制台日志输出 -->
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d %-5p [%t] %C (%F:%L) - %m%n"/>
+        </Console>
+
+        <!-- Info级别日志文件输出 -->
+        <RollingFile name="InfoRollingFile" fileName="${LOG_HOME}/info/flyshare.log"
+                     filePattern="${LOG_HOME}/info/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="warn" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <PatternLayout>
+                <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="20"/>
+        </RollingFile>
+
+        <!--WARN级别日志文件输出 -->
+        <RollingFile name="WarnRollingFile" fileName="${LOG_HOME}/warn/flyshare.log"
+                     filePattern="${LOG_HOME}/warn/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <ThresholdFilter level="warn" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <PatternLayout>
+                <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="20"/>
+        </RollingFile>
+
+        <!--ERROR级别日志文件输出 -->
+        <RollingFile name="ErrorRollingFile" fileName="${LOG_HOME}/error/flyshare.log"
+                     filePattern="${LOG_HOME}/error/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <Filters>
+                <ThresholdFilter level="error" onMatch="ACCEPT" onMismatch="DENY" />
+            </Filters>
+            <PatternLayout>
+                <Pattern>%date{yyyy-MM-dd HH:mm:ss.SSS} %level [%thread][%file:%line] - %msg%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="1MB"/>
+            </Policies>
+            <DefaultRolloverStrategy fileIndex="max" max="20"/>
+        </RollingFile>
+
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="InfoRollingFile"/>
+            <AppenderRef ref="WarnRollingFile"/>
+            <AppenderRef ref="ErrorRollingFile"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
