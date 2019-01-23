@@ -66,22 +66,22 @@
         select
         <include refid="Base_Column_List"/>
         from sys_user where 1=1
-        <if test="id != null">
+        <if test="id != null and id!=''">
             and id = #{id}
         </if>
-        <if test="username != null">
+        <if test="username != null and username!=''">
             and username = #{username}
         </if>
-        <if test="password != null">
+        <if test="password != null and password!=''">
             and password = #{password}
         </if>
-        <if test="nickname != null">
+        <if test="nickname != null and nickname!=''">
             and nickname = #{nickname}
         </if>
-        <if test="idno != null">
+        <if test="idno != null and idno!=''">
             and idno = #{idno}
         </if>
-        <if test="telephone != null">
+        <if test="telephone != null and telephone!=''">
             and telephone = #{telephone}
         </if>
         <if test="inuse != null">
@@ -115,22 +115,22 @@
         select
         count(*)
         from sys_user where 1=1
-        <if test="id != null">
+        <if test="id != null and id!=''">
             and id = #{id}
         </if>
-        <if test="username != null">
+        <if test="username != null  and username!=''">
             and username = #{username}
         </if>
-        <if test="password != null">
+        <if test="password != null and password!=''">
             and password = #{password}
         </if>
-        <if test="nickname != null">
+        <if test="nickname != null and nickname!=''">
             and nickname = #{nickname}
         </if>
-        <if test="idno != null">
+        <if test="idno != null and idno!=''">
             and idno = #{idno}
         </if>
-        <if test="telephone != null">
+        <if test="telephone != null and telephone!=''">
             and telephone = #{telephone}
         </if>
         <if test="inuse != null">

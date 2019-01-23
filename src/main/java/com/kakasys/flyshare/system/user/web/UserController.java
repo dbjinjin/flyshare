@@ -2,6 +2,7 @@ package com.kakasys.flyshare.system.user.web;
 
 import com.kakasys.flyshare.base.web.BaseController;
 import com.kakasys.flyshare.system.user.model.User;
+import com.kakasys.flyshare.system.user.model.UserOptParams;
 import com.kakasys.flyshare.system.user.model.UserQueryParams;
 import com.kakasys.flyshare.system.user.service.UserService;
 import com.kakasys.rootbase.invoke.model.InvokeResult;
@@ -50,6 +51,28 @@ public class UserController extends BaseController
         List<User> userList = userService.queryList(queryParams);
         PageInfo pageInfo = PageUtils.buildPageInfo(queryParams, count);
         return InvokeResultUtils.buildSuccResult("查询成功", userList, pageInfo);
+    }
+
+    @RequestMapping(value = "/user-add")
+    @ResponseBody
+    public InvokeResult userAdd(@RequestBody UserOptParams userOpt)
+    {
+        String username = userOpt.getUsername();
+        boolean exist = userService.checkExistUsername(username);
+        if (exist)
+        {
+            return InvokeResultUtils.buildFailResult("新增用户失败,用户名:" + username + "重复~!");
+        } else
+        {
+            boolean succSave = userService.addUser(userOpt);
+            if (succSave)
+            {
+                return InvokeResultUtils.buildSuccResult("新增用户成功");
+            } else
+            {
+                return InvokeResultUtils.buildSuccResult("新增用户失败");
+            }
+        }
     }
 
 }

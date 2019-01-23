@@ -2,6 +2,7 @@ package com.kakasys.flyshare.system.user.service;
 
 import com.kakasys.flyshare.system.menu.model.MenuQueryParams;
 import com.kakasys.flyshare.system.user.model.User;
+import com.kakasys.flyshare.system.user.model.UserOptParams;
 import com.kakasys.flyshare.system.user.model.UserQueryParams;
 
 import java.util.List;
@@ -25,5 +26,9 @@ public interface UserService
 
     int count(UserQueryParams queryParams);
 
-     User loginCheck(String username,String password);
+    User loginCheck(String username, String password);
+
+    boolean checkExistUsername(String username);
+
+    boolean addUser(UserOptParams optParams);
 }

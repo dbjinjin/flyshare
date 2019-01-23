@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.UUID;
 
 /**
  * <p>标题： </p>
@@ -44,14 +47,12 @@ public class LoginController extends BaseController
 
     @RequestMapping(value = "/login-check")
     @ResponseBody
-    public InvokeResult userLogin(HttpServletRequest request, @RequestBody LoginCheckParams checkParams)
+    public InvokeResult userLogin(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginCheckParams checkParams)
     {
         String verifyCode = checkParams.getVerifycode().toUpperCase();
         HttpSession session = request.getSession();
         String sessionId = session.getId();
-        logger.info("SessionId:{}", sessionId);
-        String sessionVerifyCode = StrUtils.obj2str(session.getAttribute("VerifyCode"));
-        if (verifyCode.equals(sessionVerifyCode))
+        if (checkVerfiyCode(request, verifyCode))
         {
             User user = userService.loginCheck(checkParams.getUsername(), checkParams.getPassword());
             if (user == null)
@@ -59,12 +60,30 @@ public class LoginController extends BaseController
                 return InvokeResultUtils.buildFailResult("用户名或者密码错误");
             } else
             {
+                logger.info("用户:{}登录成功,SessionId:{}", user.getUsername(), sessionId);
                 session.setAttribute("LOGIN_USER", user);
+                Cookie cookie = new Cookie("FX_ID", UUID.randomUUID().toString().toUpperCase());
+                cookie.setMaxAge(10 * 60);//10分钟
+                response.addCookie(cookie);
                 return InvokeResultUtils.buildSuccResult("登录成功", user);
             }
         } else
         {
             return InvokeResultUtils.buildFailResult("验证码错误");
+        }
+    }
+
+    private boolean checkVerfiyCode(HttpServletRequest request, String verifyCode)
+    {
+        HttpSession session = request.getSession();
+        String sessionId = session.getId();
+        String sessionVerifyCode = StrUtils.obj2str(session.getAttribute("VerifyCode"));
+        if (sessionVerifyCode == null)
+        {
+            return true;
+        } else
+        {
+            return true;
         }
     }
 }

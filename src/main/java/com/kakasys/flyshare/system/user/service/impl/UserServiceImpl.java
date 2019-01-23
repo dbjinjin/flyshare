@@ -1,8 +1,8 @@
 package com.kakasys.flyshare.system.user.service.impl;
 
-import com.kakasys.flyshare.system.menu.dao.MenuMapper;
 import com.kakasys.flyshare.system.user.dao.UserMapper;
 import com.kakasys.flyshare.system.user.model.User;
+import com.kakasys.flyshare.system.user.model.UserOptParams;
 import com.kakasys.flyshare.system.user.model.UserQueryParams;
 import com.kakasys.flyshare.system.user.service.UserService;
 import org.springframework.stereotype.Service;
@@ -54,4 +54,20 @@ public class UserServiceImpl implements UserService
         List<User> userList = userMapper.queryList(queryParams);
         return (userList != null && userList.size() > 0) ? userList.get(0) : null;
     }
+
+    @Override
+    public boolean checkExistUsername(String username)
+    {
+        UserQueryParams queryParams = new UserQueryParams();
+        queryParams.setUsername(username);
+        List<User> userList = userMapper.queryList(queryParams);
+        return userList != null && userList.size() > 0;
+    }
+
+    @Override
+    public boolean addUser(UserOptParams optParams)
+    {
+        return false;
+    }
+
 }

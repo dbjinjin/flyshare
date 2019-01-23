@@ -4,6 +4,7 @@ import com.kakasys.flyshare.Interceptor.LogInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
@@ -20,12 +21,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  * @version 1.0
  */
 @Configuration
-public class LoginConfig extends WebMvcConfigurationSupport
+public class LoginConfig implements WebMvcConfigurer/*extends WebMvcConfigurationSupport*/
 {
+    //继承 WebMvcConfigurationSupport 会导致全局jakson配置无效
     @Override
-    protected void addInterceptors(InterceptorRegistry registry)
+    public void addInterceptors(InterceptorRegistry registry)
     {
         registry.addInterceptor(new LogInterceptor()).addPathPatterns("/**");
-        super.addInterceptors(registry);
     }
 }

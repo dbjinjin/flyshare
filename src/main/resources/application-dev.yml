@@ -14,22 +14,19 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
     default-property-inclusion: non_null
-  # 模板引擎配置
-  freemarker:
-    cache: false
-    suffix: .ftl
-    content-type: text/html
-    charset: UTF-8
-    settings:
-      template_update_delay: 0
-    template-loader-path: classpath:/templates/ftl
-    check-template-location: true
   #数据库连接配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://106.13.61.81:3306/flyshare?useUnicode=true&characterEncoding=utf8
     username: wuxiaohai
     password: wxh19900624
+    hikari:
+      auto-commit: true
+      connection-timeout: 10000 # 等待来自池的连接的最大毫秒数  10秒
+      idle-timeout: 300000 # 连接允许在池中闲置的最长时间 5分钟
+      maxLifetime: 600000 # 池中连接最长生命周期 10分钟
+      minimumIdle: 5 # 池中维护的最小空闲连接数
+      maximumPoolSize: 10 #池中最大连接数，包括闲置和使用中的连接
 
 # mybatis 配置
 mybatis:
